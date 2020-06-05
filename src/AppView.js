@@ -5,6 +5,7 @@ import StartScreen from "./View/StartScreen";
 import LoginScreen from "./View/LoginScreen";
 import Timer from "./components/Timer";
 
+
 const AppView = () => {
   return <Timer />;
   return (
