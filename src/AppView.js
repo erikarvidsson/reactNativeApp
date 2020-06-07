@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { Router, Scene } from "react-native-router-flux";
 
+
 import StartScreen from "./View/StartScreen";
 import LoginScreen from "./View/LoginScreen";
-import Timer from "./components/Timer";
 
 
 const AppView = () => {
-  return <Timer />;
   return (
     <Router>
       <Scene key="root">

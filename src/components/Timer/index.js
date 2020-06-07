@@ -1,16 +1,22 @@
-import React, { useContext } from "react";
-import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
+import React, { useContext, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  Modal,
+} from "react-native";
 import { TimerContext, TimerProvider } from "../../../provider/TimeProvider";
-import { LinearGradient } from "expo-linear-gradient";
 
 const Timer = () => {
+  const [open, setOpen] = useState(false);
   const time = useContext(TimerContext);
-  const gradientHeight = 500;
-  const gradientBackground = "purple";
 
-  if (time.startTimer && time.timer != 0) {
+  if (time.timer != 0) {
     setTimeout(() => {
-      time.setTimer(time.timer - 1);
+      if (time.startTimer) {
+        time.setTimer(time.timer - 1);
+      }
     }, 1000);
   } else if (time.timer == 0) {
     time.setTimer(time.initialTimer);
@@ -29,37 +35,49 @@ const Timer = () => {
   return (
     <TimerProvider>
       <View style={styles.container}>
-        <LinearGradient
-          colors={["rgba(45,45,200,0.8)", "rgba(244,45,200,0.8)"]}
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-            height: 1000,
-          }}
-        />
-        <Text style={styles.timer}>Time left {time_convert(time.timer)}</Text>
+        <Modal transparent={open} visible={open}>
+          <View style={styles.openModal}>
+            <View style={styles.openModalContent}>
+              <Text style={styles.timer}>
+                Time left {time_convert(time.timer)}
+              </Text>
+              <TouchableHighlight
+                style={styles.button}
+                underlayColor="#f9f"
+                onPress={() => time.setStartTimer(true)}
+              >
+                <Text style={styles.text}>Play </Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.button}
+                underlayColor="#f9f"
+                onPress={() => time.setStartTimer(false)}
+              >
+                <Text style={styles.text}>Paus</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.button}
+                underlayColor="#f9f"
+                onPress={() => time.setTimer(time.initialTimer)}
+              >
+                <Text style={styles.text}>Restart</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.button}
+                underlayColor="#f9f"
+                onPress={() => setOpen(!open)}
+              >
+                <Text style={styles.text}>Close</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
         <TouchableHighlight
           style={styles.button}
           underlayColor="#f9f"
-          onPress={() => time.setStartTimer(true)}
+          onPress={() => setOpen(!open)}
         >
-          <Text style={styles.text}>Play </Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.button}
-          underlayColor="#f9f"
-          onPress={() => time.setStartTimer(false)}
-        >
-          <Text style={styles.text}>Paus</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.button}
-          underlayColor="#f9f"
-          onPress={() => time.setTimer(time.initialTimer)}
-        >
-          <Text style={styles.text}>Restart</Text>
+          <Text style={styles.text}>Open</Text>
         </TouchableHighlight>
       </View>
     </TimerProvider>
@@ -67,15 +85,25 @@ const Timer = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
+  openModal: {
+    display: "flex",
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  openModalContent: {
+    marginTop: 150,
+    padding: 50,
+    backgroundColor: "#d04",
+    borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
   },
   text: {
+    // fontFamily: "Dosis",
     color: "#fff",
     fontSize: 20,
+    fontWeight: "bold",
   },
   timer: {
     paddingBottom: 100,
@@ -85,11 +113,15 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 25,
     marginBottom: 20,
-    backgroundColor: "#f0f",
+    backgroundColor: "rgba(240,0,990,0.8)",
     width: 300,
     height: 50,
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: "#e09",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
   },
   buttonPress: {
     borderRadius: 25,

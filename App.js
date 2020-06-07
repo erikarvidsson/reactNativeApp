@@ -1,19 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-
-import AppView from './src/AppView'
-
-import { TestProvider } from "./provider/TestProvider";
+import { StyleSheet } from "react-native";
 import { TimerProvider } from "./provider/TimeProvider";
+import AppView from './src/AppView'
 
 
 
 const App = () =>  {
   return (
     <TimerProvider>
-    <TestProvider>
         <AppView />
-    </TestProvider>
     </TimerProvider>
   );
 }
